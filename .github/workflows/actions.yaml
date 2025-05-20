@@ -9,6 +9,9 @@ env:
     PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
     DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
     DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+    ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
+    ARGOCD_USERNAME: ${{ secrets.ARGOCD_USERNAME }}
+    ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -63,3 +66,10 @@ jobs:
               curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
               chmod +x argocd
               sudo mv argocd /usr/local/bin/argocd
+
+        - name: Login to ArgoCD
+          run: |
+              argocd login ${{ secrets.ARGOCD_SERVER }} \
+              --username ${{ secrets.ARGOCD_USERNAME }} \
+              --password ${{ secrets.ARGOCD_PASSWORD }} \
+              --insecure
