@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'manifest/**'
 
 env:
     PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -101,4 +103,7 @@ jobs:
               git add .
               git commit -m "Update image to my-app:${{ github.sha }}"
               git push origin main
+
+        - name: Refresh ArgoCD App and Sync
+          run: argocd app sync my-app
         
